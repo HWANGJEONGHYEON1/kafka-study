@@ -1,6 +1,8 @@
 package com.example;
 
+import com.example.custom.CustomPartitioner;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -20,15 +22,15 @@ public class SimpleProducer {
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVER);
         configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        configs.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, CustomPartitioner.class);
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(configs);
-        ProducerRecord<String, String> record1 = new ProducerRecord<>(TOPIC_NAME, "Seoul", "서울");
-        ProducerRecord<String, String> record2 = new ProducerRecord<>(TOPIC_NAME, "Busan", "부산");
+        int partitionNo = 0;
+        ProducerRecord<String, String> record1 = new ProducerRecord<>(TOPIC_NAME, partitionNo, "Seoul", "서울");
+        ProducerRecord<String, String> record2 = new ProducerRecord<>(TOPIC_NAME, partitionNo, "Pangyo", "판교");
         producer.send(record1);
         producer.send(record2);
         logger.info("{}", record1);
-        logger.info("{}", record2);
-
         producer.flush();
         producer.close();
     }
