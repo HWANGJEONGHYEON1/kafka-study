@@ -22,10 +22,12 @@ public class SimpleProducer {
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(configs);
-        String messageValue = "testMessage";
-        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, messageValue);
-        producer.send(record);
-        logger.info("{}", record);
+        ProducerRecord<String, String> record1 = new ProducerRecord<>(TOPIC_NAME, "Seoul", "서울");
+        ProducerRecord<String, String> record2 = new ProducerRecord<>(TOPIC_NAME, "Busan", "부산");
+        producer.send(record1);
+        producer.send(record2);
+        logger.info("{}", record1);
+        logger.info("{}", record2);
 
         producer.flush();
         producer.close();
