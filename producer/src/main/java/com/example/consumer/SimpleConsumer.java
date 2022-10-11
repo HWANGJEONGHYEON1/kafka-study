@@ -25,6 +25,8 @@ public class SimpleConsumer {
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+//        properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 60000);
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
@@ -35,6 +37,7 @@ public class SimpleConsumer {
             for (ConsumerRecord<String, String> record : records) {
                 logger.info("record: {}", record);
             }
+            consumer.commitSync();
         }
     }
 }
