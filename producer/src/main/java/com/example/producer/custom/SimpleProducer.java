@@ -3,6 +3,7 @@ package com.example.producer.custom;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +24,13 @@ public class SimpleProducer {
         configs.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, CustomPartitioner.class);
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(configs);
-        int partitionNo = 0;
-        ProducerRecord<String, String> record1 = new ProducerRecord<>(TOPIC_NAME, partitionNo, "Seoul", "서울");
-        ProducerRecord<String, String> record2 = new ProducerRecord<>(TOPIC_NAME, partitionNo, "Pangyo", "판교");
-        producer.send(record1);
-        producer.send(record2);
-        logger.info("{}", record1);
+        String messageValue = "testMessage";
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, "Seoul", "23");
+        // 동기로 받을 수 있지만, 동기로 받는다면 빠른 전송에 허들이 될 수 있다.
+        // callback 인터페이스 사용
+        producer.send(record, new ProducerCallback());
+        logger.info("{}", record);
+
         producer.flush();
         producer.close();
     }
