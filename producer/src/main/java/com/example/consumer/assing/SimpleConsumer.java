@@ -1,6 +1,5 @@
 package com.example.consumer.assing;
 
-import com.example.consumer.rebalance.RebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 
 public class SimpleConsumer {
